@@ -1,0 +1,26 @@
+{
+  "name": "@ai-dev-team/harness",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@ai-dev-team/types": "workspace:*",
+    "picomatch": "^4.0.7"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "@types/picomatch": "^4.0.3",
+    "eslint": "catalog:",
+    "typescript": "catalog:",
+    "typescript-eslint": "catalog:",
+    "vitest": "catalog:"
+  }
+}

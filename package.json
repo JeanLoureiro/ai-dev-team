@@ -1,0 +1,24 @@
+{
+  "name": "ai-dev-team",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@10.24.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test"
+  },
+  "devDependencies": {
+    "@types/node": "^26.0.0",
+    "eslint": "10.11.0",
+    "turbo": "2.11.4",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "~8.70.1",
+    "vitest": "5.0.1"
+  }
+}
