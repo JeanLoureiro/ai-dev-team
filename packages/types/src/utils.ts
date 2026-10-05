@@ -33,3 +33,23 @@ export function formatDuration(ms: number): string {
   const minutes = Math.floor((ms % 3600000) / 60000);
   return `${hours}h ${minutes}m`;
 }
+
+/**
+ * Repeat a string a specified number of times.
+ *
+ * @param text - The string to repeat
+ * @param times - The number of times to repeat the string
+ * @returns The repeated string, or an empty string if times <= 0
+ *
+ * @example
+ * repeat('ab', 3) // "ababab"
+ * repeat('hello', 2) // "hellohello"
+ * repeat('x', 0) // ""
+ * repeat('test', -1) // ""
+ */
+export function repeat(text: string, times: number): string {
+  if (times <= 0) {
+    return "";
+  }
+  return text.repeat(times);
+}

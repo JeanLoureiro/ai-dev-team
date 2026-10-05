@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatDuration } from "../src/utils";
+import { formatDuration, repeat } from "../src/utils";
 
 describe("formatDuration", () => {
   describe("milliseconds range (< 1 second)", () => {
@@ -109,6 +109,95 @@ describe("formatDuration", () => {
 
     it("handles fractional milliseconds by flooring", () => {
       expect(formatDuration(1.9)).toBe("1ms");
+    });
+  });
+});
+
+describe("repeat", () => {
+  describe("basic functionality", () => {
+    it("repeats a two-character string three times", () => {
+      expect(repeat("ab", 3)).toBe("ababab");
+    });
+
+    it("repeats a single character multiple times", () => {
+      expect(repeat("a", 5)).toBe("aaaaa");
+    });
+
+    it("repeats a string once", () => {
+      expect(repeat("hello", 1)).toBe("hello");
+    });
+
+    it("repeats a longer string", () => {
+      expect(repeat("hello", 3)).toBe("hellohellohello");
+    });
+
+    it("repeats a word with spaces", () => {
+      expect(repeat("hello world ", 2)).toBe("hello world hello world ");
+    });
+  });
+
+  describe("edge cases with times = 0 or negative", () => {
+    it("returns empty string when times is 0", () => {
+      expect(repeat("hello", 0)).toBe("");
+    });
+
+    it("returns empty string when times is negative", () => {
+      expect(repeat("hello", -1)).toBe("");
+    });
+
+    it("returns empty string when times is a large negative number", () => {
+      expect(repeat("test", -100)).toBe("");
+    });
+  });
+
+  describe("edge cases with empty string input", () => {
+    it("returns empty string when input is empty and times > 0", () => {
+      expect(repeat("", 3)).toBe("");
+    });
+
+    it("returns empty string when input is empty and times = 0", () => {
+      expect(repeat("", 0)).toBe("");
+    });
+
+    it("returns empty string when input is empty and times < 0", () => {
+      expect(repeat("", -1)).toBe("");
+    });
+  });
+
+  describe("special characters and unicode", () => {
+    it("repeats special characters", () => {
+      expect(repeat("!@#", 2)).toBe("!@#!@#");
+    });
+
+    it("repeats unicode emoji", () => {
+      expect(repeat("🎉", 3)).toBe("🎉🎉🎉");
+    });
+
+    it("repeats unicode characters", () => {
+      expect(repeat("café", 2)).toBe("cafécafé");
+    });
+
+    it("repeats newline characters", () => {
+      expect(repeat("\n", 2)).toBe("\n\n");
+    });
+
+    it("repeats tab characters", () => {
+      expect(repeat("\t", 3)).toBe("\t\t\t");
+    });
+  });
+
+  describe("performance and large repeat counts", () => {
+    it("handles moderately large repeat count efficiently", () => {
+      const result = repeat("x", 1000);
+      expect(result).toBe("x".repeat(1000));
+      expect(result.length).toBe(1000);
+    });
+
+    it("handles large repeat count with longer string", () => {
+      const result = repeat("abc", 100);
+      expect(result.length).toBe(300);
+      expect(result.startsWith("abcabcabc")).toBe(true);
+      expect(result.endsWith("abcabcabc")).toBe(true);
     });
   });
 });
