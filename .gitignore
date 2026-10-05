@@ -19,3 +19,7 @@ coverage/
 # misc
 *.log
 .DS_Store
+
+# AI 
+.devin/
+
