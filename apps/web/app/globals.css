@@ -97,6 +97,27 @@ button.danger {
   color: #f85149;
 }
 
+.timeline-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.timeline-toggle {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  color: var(--muted);
+  font-size: 16px;
+  transition: color 0.2s;
+}
+
+.timeline-toggle:hover {
+  color: var(--text);
+}
+
 .timeline {
   list-style: none;
   padding: 0;

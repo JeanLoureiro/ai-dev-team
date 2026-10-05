@@ -9,6 +9,7 @@ import type {
 import { getStore } from "@/lib/deps";
 import { StatusBadge } from "../../status-badge";
 import { RunActions } from "./actions";
+import { CollapsibleTimeline } from "./collapsible-timeline";
 
 export const dynamic = "force-dynamic";
 
@@ -172,17 +173,7 @@ export default async function RunPage({
         </section>
       ) : null}
 
-      <section className="panel">
-        <h2>Timeline</h2>
-        <ul className="timeline">
-          {events.map((e) => (
-            <li key={e.id}>
-              <div>{e.type}{e.agent ? ` (${e.agent})` : ""}</div>
-              <div className="t">{e.timestamp.toISOString()}</div>
-            </li>
-          ))}
-        </ul>
-      </section>
+      <CollapsibleTimeline events={events} />
     </>
   );
 }
