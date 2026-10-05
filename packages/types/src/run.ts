@@ -50,10 +50,10 @@ export type RunLimits = {
 };
 
 export const DEFAULT_RUN_LIMITS: RunLimits = {
-  maxIterations: 60,
+  maxIterations: 120,
   maxCoderIterations: 3,
   maxDurationMs: 30 * 60 * 1000,
-  maxTokens: 1_000_000,
+  maxTokens: 3_000_000,
   maxCostUsd: 5,
 };
 

@@ -26,6 +26,9 @@ export type CommitFile = {
 export interface GitHubClient {
   getIssue(repo: RepoRef, issueNumber: number): Promise<GitHubIssue>;
 
+  /** Open issues on the repo, newest first (excludes pull requests). */
+  listOpenIssues(repo: RepoRef, limit?: number): Promise<GitHubIssue[]>;
+
   /** Workspace-relative file listing of the default branch tree. */
   getFileTree(repo: RepoRef, ref?: string): Promise<string[]>;
 

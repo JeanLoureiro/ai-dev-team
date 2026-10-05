@@ -53,6 +53,29 @@ export class OctokitGitHubClient implements GitHubClient {
     };
   }
 
+  async listOpenIssues(repo: RepoRef, limit = 50): Promise<GitHubIssue[]> {
+    const { data } = await this.octokit.rest.issues.listForRepo({
+      owner: repo.owner,
+      repo: repo.name,
+      state: "open",
+      sort: "created",
+      direction: "desc",
+      per_page: limit,
+    });
+    return data
+      .filter((i) => !i.pull_request)
+      .map((i) => ({
+        number: i.number,
+        title: i.title,
+        body: i.body ?? "",
+        labels: i.labels
+          .map((l) => (typeof l === "string" ? l : (l.name ?? "")))
+          .filter(Boolean),
+        url: i.html_url,
+        state: "open" as const,
+      }));
+  }
+
   async getFileTree(repo: RepoRef, ref?: string): Promise<string[]> {
     const branch = ref ?? (await this.defaultBranch(repo));
     const { data } = await this.octokit.rest.git.getTree({

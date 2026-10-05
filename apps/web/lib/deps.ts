@@ -82,17 +82,21 @@ export function getModel(): string {
   return process.env.ANTHROPIC_MODEL ?? "claude-sonnet-4-5";
 }
 
+export function getWorkspacesRoot(): string {
+  return path.resolve(
+    /* turbopackIgnore: true */
+    process.cwd(),
+    process.env.AI_DEV_TEAM_WORKSPACES ?? ".workspaces",
+  );
+}
+
 export function getOrchestrator(): RunOrchestrator {
   if (!g.__aiDevTeamOrchestrator) {
     g.__aiDevTeamOrchestrator = new RunOrchestrator({
       store: getStore(),
       llm: getLlm(),
       github: getGithub(),
-      workspacesRoot: path.resolve(
-        /* turbopackIgnore: true */
-        process.cwd(),
-        process.env.AI_DEV_TEAM_WORKSPACES ?? ".workspaces",
-      ),
+      workspacesRoot: getWorkspacesRoot(),
       model: getModel(),
     });
   }

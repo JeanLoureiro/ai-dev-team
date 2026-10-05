@@ -6,16 +6,12 @@ const usage = {
   iterations: 1,
   startedAt: new Date("2026-10-03T00:00:00Z"),
   tokenUsage: { inputTokens: 100, outputTokens: 50, estimatedCostUsd: 0.01 },
+  now: new Date("2026-10-03T00:01:00Z"),
 };
 
 describe("evaluateLimits", () => {
   it("passes when under all limits", () => {
-    expect(
-      evaluateLimits(
-        { ...usage, now: new Date("2026-10-03T00:01:00Z") },
-        DEFAULT_RUN_LIMITS,
-      ).exceeded,
-    ).toBe(false);
+    expect(evaluateLimits(usage, DEFAULT_RUN_LIMITS).exceeded).toBe(false);
   });
 
   it("exceeds on iterations", () => {
@@ -41,8 +37,8 @@ describe("evaluateLimits", () => {
       {
         ...usage,
         tokenUsage: {
-          inputTokens: 900_000,
-          outputTokens: 200_000,
+          inputTokens: DEFAULT_RUN_LIMITS.maxTokens,
+          outputTokens: 1,
           estimatedCostUsd: 1,
         },
       },

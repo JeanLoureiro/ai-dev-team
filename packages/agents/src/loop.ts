@@ -18,7 +18,11 @@ import {
   type LlmUsage,
 } from "@ai-dev-team/llm";
 
-const MAX_TOOL_RESULT_CHARS = 20_000;
+const MAX_TOOL_RESULT_CHARS = 12_000;
+/** Older tool results are replaced with a stub to keep context bounded. */
+const FULL_TOOL_RESULTS_KEPT = 8;
+const COMPACTED_TOOL_RESULT =
+  "[tool output cleared from context - call the tool again if needed]";
 
 export type OutputTool<T> = {
   name: string;
@@ -151,10 +155,31 @@ export async function runAgentLoop<T>(
       });
     }
     messages.push(toolResultMessage(results));
+    compactToolResults(messages);
   }
 
   throw new HarnessError(
     "RUN_LIMIT_EXCEEDED",
     `${agent} exceeded maxIterations ${input.maxIterations} without calling ${outputTool.name}`,
   );
+}
+
+/**
+ * Keep only the most recent tool results in full. Every iteration resends
+ * the whole message history, so without compaction input tokens grow
+ * quadratically with the number of tool calls (docs/architecture.md
+ * section 19, ephemeral context).
+ */
+function compactToolResults(messages: LlmMessage[]): void {
+  const blocks: LlmToolResultBlock[] = [];
+  for (const message of messages) {
+    for (const block of message.content) {
+      if (block.type === "tool_result") blocks.push(block);
+    }
+  }
+  for (const block of blocks.slice(0, -FULL_TOOL_RESULTS_KEPT)) {
+    if (block.content !== COMPACTED_TOOL_RESULT) {
+      block.content = COMPACTED_TOOL_RESULT;
+    }
+  }
 }

@@ -26,7 +26,7 @@ export function plannerPolicy(): ToolPolicy {
     deniedPaths: DEFAULT_DENIED_PATHS,
     allowedCommands: [],
     maxExecutionTimeMs: 30_000,
-    maxIterations: 20,
+    maxIterations: 40,
   };
 }
 

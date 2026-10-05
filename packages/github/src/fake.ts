@@ -41,6 +41,15 @@ export class FakeGitHubClient implements GitHubClient {
     return issue;
   }
 
+  async listOpenIssues(repo: RepoRef): Promise<GitHubIssue[]> {
+    const prefix = `${repo.owner}/${repo.name}#`;
+    return [...this.issues.entries()]
+      .filter(([key]) => key.startsWith(prefix))
+      .map(([, issue]) => issue)
+      .filter((issue) => issue.state === "open")
+      .sort((a, b) => b.number - a.number);
+  }
+
   async getFileTree(): Promise<string[]> {
     return this.fileTree;
   }
